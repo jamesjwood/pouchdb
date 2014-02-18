@@ -1,5 +1,5 @@
 {
-  "name": "pouchdb",
+  "name": "tsuju-pouchdb",
   "version": "1.2.0-alpha",
   "description": "PouchDB is a pocket-sized database.",
   "release": "nightly",
