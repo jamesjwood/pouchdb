@@ -57,36 +57,64 @@ All dependancies installed? great, now building PouchDB itself is a breeze:
 
 You will now have various distributions of PouchDB in your `dist` folder, congratulations.
 
+ * If you are on windows, you will need `node-gyp` to install levelup, visit https://github.com/TooTallNate/node-gyp#installation for installation instructions.
+
 Running PouchDB Tests
 --------------------------------------
 
-The PouchDB test suite expects an instance of CouchDB running in Admin Party on http://127.0.0.1:5984, you can configure this by sending the `COUCH_HOST` env var when running the Node tests or the `dev-server`
+The PouchDB test suite expects an instance of CouchDB running in Admin Party on http://127.0.0.1:5984, you can configure this by sending the `COUCH_HOST` env var.
+
+ * PouchDB has been primarily developed on Linux and OSX, if you are using Windows then these instructions will have problems, we would love your help fixing them though.
 
 ### Node Tests
 
 Run all tests with:
 
-    $ npm run test-node
-
-Run an filtered set of tests:
-
-    $ GREP=basics npm run test-node
+    $ npm test
 
 ### Browser Tests
 
-Browser tests require a running HTTP server and a CORS proxy:
+Browser tests can be run automatically with:
 
-    $ npm run dev-server
-    # or
-    $ COUCH_HOST=http://user:pass@myname.host.com npm run dev-server
+    $ CLIENT=firefox npm test
 
-Now visit http://127.0.0.1:8000/tests/test.html in your browser, you can add ?grep=basics to run a test file. You do not need to manually rebuild PouchDB when you run the `dev-server` target, any changes you make to the source will automatically be built.
+or you can run:
 
-### All Tests
+    $ npm run dev
 
-To run all tests:
+and open http://127.0.0.1:8000/tests/test.html in your browser of choice.
 
-    $ npm test
+### Test Options
+
+#### Subset of tests:
+
+    $ GREP=test.replication.js npm test
+
+or append `?grep=test.replication.js` if you opened the tests in a browser manually
+
+#### Test Coverage
+
+    $ COVERAGE=1 npm test
+
+#### Test alternative server
+
+    $ COUCH_HOST=http://user:pass@myname.host.com npm run dev
+
+or
+
+    $ COUCH_HOST=http://user:pass@myname.host.com npm test
+
+### Testing Pouch in a shell
+
+For quick debugging, you can run an interactive Node shell with the `PouchDB` variable already available:
+
+    npm run shell
+
+Alternative Backends
+--------------------------------------
+PouchDB is looking to support alternative backends that comply with the [LevelDOWN API](https://github.com/rvagg/abstract-leveldown). For example, simply include `LEVEL_BACKEND=leveljs` in your `npm run build` and `npm run dev` commands to experiment with this feature!
+
+Doing so will also create a separate distribution, for example, `pouchdb-leveljs.js` rather than `pouchdb-nightly.js`. In order to test a different distribution from `pouchdb-nightly.js`, you must specify in the testing URL: http://127.0.0.1:8000/tests/test.html?sourceFile=pouchdb-leveljs.js. `LEVEL_BACKEND=leveljs npm run test` will accomplish the same thing.
 
 Git Essentials
 --------------------------------------
@@ -107,10 +135,16 @@ Building PouchDB Documentation
 
 The source for the website http://pouchdb.com is stored inside the `docs` directory of the PouchDB repository, you can make changes and submit pull requests as with any other patch. To build and view the website locally you will need to install [jekyll](http://jekyllrb.com/) then:
 
-    $ cd docs
-    $ jekyll -w serve
+    $ npm run build-site
 
 You should now find the documentation at http://127.0.0.1:4000
+
+Writing a PouchDB Blog Post
+--------------------------------------
+
+Writing a blog post for PouchDB is exactly the same process as other contributions, the blog posts are kept @ https://github.com/daleharvey/pouchdb/tree/master/docs/_posts, just build the site as documented above, its usually easiest to copy an existing post and write away.
+
+If you want to be sure the blog post is relevant, open an issue on what you want to write about to hear back from reviewers.
 
 Committers!
 --------------
